@@ -42,7 +42,7 @@ All of the utilized datasets for PGx Guidelines experiments are publicly availab
 https://www.orcestra.ca/pset/stats
 ```
 
-## Preprocess and Load datasets
+## Preprocess and load datasets
 After downloading `PSet` objects, the molecular and pharmacological data can be extracted via `R` using codes provided in `Preprocess data` subdirectory. 
 
 To load all datasets and Area above dose-response curve (AAC) data, run `LoadAllPSets.R`.
@@ -61,7 +61,7 @@ Alternatively, we have also provided these preprocessed files on [Zenodo](https:
 
 # Experiments
 
-## Within domain
+## Within-domain
 For this analysis, we have provided the `Python` scripts as follows: 
 
 - Ridge Regression: `Within-Ridge-aac.py` and `Within-Ridge-ic50.py`
@@ -81,7 +81,7 @@ sbatch rf-wjob-aac.bs
 sbatch rf-wjob-ic50.bs
 ```
 
-## Cross domain 
+## Cross-domain 
 For this analysis, we have provided the Jupyter notebooks to run Ridge Regression (`Ridge.ipynb`), Elastic Net (`ElasticNet.ipynb`), and Random Forest (`RandomForest.ipynb`). For Deep Neural Networks experiments, we have provided `python` scripts in `DNN` subdirectory to run them. First you should create directories to sotre logs, models, and results. You should also add the path to these directories in `PGxGRun.bs`:
 ```
 mkdir logs
@@ -91,7 +91,7 @@ sbatch PGxGRun.bs
 ```
 We have also provided randomly generated hyperparameter settings in `filelistF10Uniquev1`. 
 
-We have provised the model objects for the best settings on [Zenodo](https://zenodo.org/record/4642024#.YF9-FK9KiUk).
+We have provided the model objects for the best settings of DNN experiments on [Zenodo](https://zenodo.org/record/4642024#.YF9-FK9KiUk).
 
 ## CTRPv2 vs. GDSCv1
 For this analysis, we have provided the Jupyter notebook `GDSCv1.ipynb`.
