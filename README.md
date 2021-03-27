@@ -29,7 +29,7 @@ To install these packages run the following command:
 ```
 conda env create -f PGx.yml
 ```
-This command installs `PGxG` envrinment. 
+This command installs `PGxG` environment. 
 
 After the successful installation of the packages into environmet you would be able to load them using `conda activate`.
 
