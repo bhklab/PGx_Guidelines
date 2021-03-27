@@ -82,7 +82,7 @@ sbatch rf-wjob-ic50.bs
 ```
 
 ## Cross-domain 
-For this analysis, we have provided the Jupyter notebooks to run Ridge Regression (`Ridge.ipynb`), Elastic Net (`ElasticNet.ipynb`), and Random Forest (`RandomForest.ipynb`). For Deep Neural Networks experiments, we have provided `python` scripts in `DNN` subdirectory to run them. First you should create directories to sotre logs, models, and results. You should also add the path to these directories in `PGxGRun.bs`:
+For this analysis, we have provided the Jupyter notebooks to run Ridge Regression (`Ridge.ipynb`), Elastic Net (`ElasticNet.ipynb`), and Random Forest (`RandomForest.ipynb`). For Deep Neural Networks experiments, we have provided `python` scripts in `DNN` subdirectory to run them. First you should create directories to store logs, models, and results. You should also add your local `path` to these directories to `PGxGRun.bs`:
 ```
 mkdir logs
 mkdir models
