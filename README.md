@@ -1,5 +1,3 @@
-# PGx_Guidelines
-
 Guidelines for Developing Machine Learning Models for Drug Sensitivity Prediction From Cell Line-Based Pharmacogenomics Data
 ===================
 
