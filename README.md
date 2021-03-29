@@ -1,12 +1,12 @@
+
 Guidelines for Developing Machine Learning Models for Drug Sensitivity Prediction From Cell Line-Based Pharmacogenomics Data
-===================
 
 <img src="./Figure/Graphical_Abstract.png" width="900" class="center">
 
 # Table of contents
 1. [Installation](#installation)
 2. [Datasets](#Datasets)
-3. [Experiments](#Datasets)
+3. [Experiments](#Experiments)
 4. [Citation](#citation)
 
 
@@ -59,6 +59,34 @@ Alternatively, we have also provided these preprocessed files on [Zenodo](https:
 
 # Experiments
 
+## Run univariable analysis
+Each Rscript includes code to load required libraries and datasets. 
+
+Simply run the following for:
+- all [solid and non-solid] tissues:
+```
+Rscript biomarker_analysis_alltissues.R "$@"
+```
+
+- after excluding non-solid tissues:
+```
+Rscript biomarker_analysis_solidonly.R "$@"
+```
+
+- after excluding non-solid tissues and log transformed IC50 values:
+```
+Rscript biomarker_analysis_log.R "$@"
+```
+
+- after excluding non-solid tissues and truncated
+```
+Rscript biomarker_analysis_truncated.R "$@"
+```
+
+- after excluding non-solid tissues, truncated, and log transformed IC50 values:
+```
+Rscript biomarker_analysis_truncated_log.R "$@"
+```
 ## Within-domain
 For this analysis, we have provided the `Python` scripts as follows: 
 
@@ -105,4 +133,3 @@ python SNRidge-aac.py
 ```
 To be Updated...
 ```
-
