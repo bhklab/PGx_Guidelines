@@ -1,0 +1,11 @@
+#!/bin/bash
+#SBATCH --job-name=PGxG_ridge-ic50
+#SBATCH --output=wjobs/PGxGRidge.out
+#SBATCH --error=wlogs/PGxGRidge.log
+#SBATCH --time=2-0:59:59
+#SBATCH --mem-per-cpu=11G
+#SBATCH --cpus-per-task=64
+
+source activate PGxG
+
+python Within-Ridge-ic50.py
