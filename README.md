@@ -1,5 +1,5 @@
 
-Guidelines for Developing Machine Learning Models for Drug Sensitivity Prediction From Cell Line-Based Pharmacogenomics Data
+# Drug Sensitivity Prediction From Cell Line-Based Pharmacogenomics Data: Guidelines for Developing Machine Learning Models
 
 <img src="./Figure/Graphical_Abstract.png" width="900" class="center">
 
