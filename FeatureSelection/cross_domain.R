@@ -2,9 +2,10 @@
 # Author: Soheil Jahangiri-Tazehkand - BHKLab
 #############################################
 rm(list = ls())
-no.cores <- 50
 
-source("Hossein_Project/finalCodes/helper.R")
+no.cores <- 50 # Number of CPU cores to use.
+
+source("LoadData.R")
 
 set.seed(42)
 
@@ -121,7 +122,7 @@ for (drug.id in 1:ncol(resp_mat)){
 }
 
 ###############################################################################################################
-##### Evaluate and plot the results
+##### Evaluate the predictions using Pearson and Spearman correlations
 ###############################################################################################################
 
 drugs <- c("Bortezomib", "Entinostat", "Sirolimus", "Docetaxel", "Gemcitabine", "Crizotinib", "Lapatinib", "Vorinostat", "Erlotinib", "Paclitaxel", "Pictilisib")
