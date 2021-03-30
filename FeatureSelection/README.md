@@ -19,15 +19,15 @@ Alternatively, you can run it from your terminal by the following command. <br/>
 ```
 Rscript cross_domain.R > output.txt
 ```
-The results will be printed to the `output.txt` file. <br/>
+The results will be printed to the `output.txt` file.
+
 This program was successfully tested using the following OS and packages:<br/>
-Linux Mint 19.2 Cinnamon x_64<br/>
+<i>Linux Mint 19.2 Cinnamon x_64<br/>
 R version 4.0.3 (2020-10-10)<br/>
 glmnet 4.0-2<br/>
 caret 6.0-86<br/>
 doMC 1.3.6<br/>
 PharmacoGx 2.0.3<br/>
 SummarizedExperiment 1.18.1<br/>
-
-
-mRMRe 2.1.0
+mRMRe 2.1.0<br/>
+</i>
