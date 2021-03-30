@@ -20,7 +20,7 @@ source("cross_domain.R")
 ```
 Alternatively, you can run it from your terminal by the following command. 
 ```
-Rscript script.R > output.txt
+Rscript cross_domain.R > output.txt
 ```
 The results will be printed to the `output.txt` file. 
 
