@@ -25,11 +25,19 @@ Rscript cross_domain.R > output.txt
 The results will be printed to the `output.txt` file. 
 
 This program was successfully tested using the following OS and packages:
+
 Linux Mint 19.2 Cinnamon x_64
+
 R version 4.0.3 (2020-10-10)
+
 glmnet 4.0-2
+
 caret 6.0-86
+
 doMC 1.3.6
+
 PharmacoGx 2.0.3
+
 SummarizedExperiment 1.18.1
+
 mRMRe 2.1.0
