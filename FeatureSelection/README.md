@@ -9,8 +9,11 @@
 
 ## Running
 Download the psets from https://orcestra.ca and and specify the path to the psets in `LoadData.R`
+
 For l1000 results, set the fs.method to 'l1000' in `cross_domain.R`, and for mRMR set it to 'mRMR'.
+
 If you move the the l1000.geneList.txt file, you need to provide the absolute path in line 81 of 'LoadData.R'.
+
 Finally, you can run the script by the following commands within R enviroment. 
 ```
 source("cross_domain.R")
