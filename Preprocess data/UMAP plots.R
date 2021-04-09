@@ -41,10 +41,9 @@ gcsi.exprs.protein_genes <- gcsi.exprs.protein_genes[ , !is.na(colSums(gcsi.expr
 gcsi.exprs.protein_genes <- na.omit(gcsi.exprs.protein_genes)
 gcsi.cell.info <- PharmacoGx::cellInfo(gCSI)
 gcsi.cell.info$tissue.type <- 0
-gcsi.cell.info$tissue.type[which(gcsi.cell.info$tissueid == "Lymphoid" | gcsi.cell.info$tissueid == "Myeloid")] <- "non-solid"
-gcsi.cell.info$tissue.type[-which(gcsi.cell.info$tissueid == "Lymphoid" | gcsi.cell.info$tissueid == "Myeloid")] <- "solid"
+gcsi.cell.info$tissue.type[which(gcsi.cell.info$tissueid == "Lymphoid" | gcsi.cell.info$tissueid == "Myeloid" | gcsi.cell.info$tissueid == "Other")] <- "non-solid"
+gcsi.cell.info$tissue.type[-which(gcsi.cell.info$tissueid == "Lymphoid" | gcsi.cell.info$tissueid == "Myeloid" | gcsi.cell.info$tissueid == "Other")] <- "solid"
 
-gcsi.cell.info = gcsi.cell.info[-which(gcsi.cell.info$tissueid == "Other"),]
 idx.gcsi <- intersect(row.names(gcsi.cell.info),colnames(gcsi.exprs.protein_genes))
 gcsi.cell.info <- gcsi.cell.info[idx.gcsi,]
 gcsi.exprs.protein_genes <- gcsi.exprs.protein_genes[,idx.gcsi]
@@ -52,7 +51,7 @@ gcsi.exprs.protein_genes <- gcsi.exprs.protein_genes[,idx.gcsi]
 gcsi.umap.exprs <- umap::umap(t(gcsi.exprs.protein_genes))
 gcsi.umap.exprs.df <- as.data.frame(gcsi.umap.exprs$layout)
 
-tiff('gCSIumapexprs.png', units="in", width=10, height=7, res=600, compression = 'lzw')
+png('gCSIumapexprsv2.png', units="in", width=10, height=7, res=600)
 par(cex.axis=0.9)
 Tumor <- gcsi.cell.info[rownames(gcsi.umap.exprs.df), c("tissue.type")]
 ggplot(gcsi.umap.exprs.df, aes(V1, V2, color = Tumor))+ 
@@ -70,10 +69,9 @@ ctrp.exprs.protein_genes <- na.omit(ctrp.exprs.protein_genes)
 
 ctrp.cell.info <- PharmacoGx::cellInfo(CCLE)
 ctrp.cell.info$tissue.type <- 0
-ctrp.cell.info$tissue.type[which(ctrp.cell.info$tissueid == "Lymphoid" | ctrp.cell.info$tissueid == "Myeloid")] <- "non-solid"
-ctrp.cell.info$tissue.type[-which(ctrp.cell.info$tissueid == "Lymphoid" | ctrp.cell.info$tissueid == "Myeloid")] <- "solid"
+ctrp.cell.info$tissue.type[which(ctrp.cell.info$tissueid == "Lymphoid" | ctrp.cell.info$tissueid == "Myeloid" | ctrp.cell.info$tissueid == "Other")] <- "non-solid"
+ctrp.cell.info$tissue.type[-which(ctrp.cell.info$tissueid == "Lymphoid" | ctrp.cell.info$tissueid == "Myeloid" | ctrp.cell.info$tissueid == "Other")] <- "solid"
 
-ctrp.cell.info = ctrp.cell.info[-which(ctrp.cell.info$tissueid == "Other"),]
 idx.ctrp <- intersect(row.names(ctrp.cell.info),colnames(ctrp.exprs.protein_genes))
 ctrp.cell.info <- ctrp.cell.info[idx.ctrp,]
 ctrp.exprs.protein_genes <- ctrp.exprs.protein_genes[,idx.ctrp]
@@ -81,7 +79,7 @@ ctrp.exprs.protein_genes <- ctrp.exprs.protein_genes[,idx.ctrp]
 ctrp.umap.exprs <- umap::umap(t(ctrp.exprs.protein_genes))
 ctrp.umap.exprs.df <- as.data.frame(ctrp.umap.exprs$layout)
 
-tiff('CTRPv2umapexprs.png', units="in", width=10, height=7, res=600, compression = 'lzw')
+png('CTRPv2umapexprsv2.png', units="in", width=10, height=7, res=600)
 par(cex.axis=0.9)
 Tumor <- ctrp.cell.info[rownames(ctrp.umap.exprs.df), c("tissue.type")]
 ggplot(ctrp.umap.exprs.df, aes(V1, V2, color = Tumor))+ 
@@ -146,10 +144,9 @@ gdsc.exprs.protein_genes <- gdsc.exprs.protein_genes[ , !is.na(colSums(gdsc.expr
 gdsc.exprs.protein_genes <- na.omit(gdsc.exprs.protein_genes)
 gdsc.cell.info <- PharmacoGx::cellInfo(GDSCv2)
 gdsc.cell.info$tissue.type <- 0
-gdsc.cell.info$tissue.type[which(gdsc.cell.info$tissueid == "Lymphoid" | gdsc.cell.info$tissueid == "Myeloid")] <- "non-solid"
-gdsc.cell.info$tissue.type[-which(gdsc.cell.info$tissueid == "Lymphoid" | gdsc.cell.info$tissueid == "Myeloid")] <- "solid"
+gdsc.cell.info$tissue.type[which(gdsc.cell.info$tissueid == "Lymphoid" | gdsc.cell.info$tissueid == "Myeloid" | gdsc.cell.info$tissueid == "Other")] <- "non-solid"
+gdsc.cell.info$tissue.type[-which(gdsc.cell.info$tissueid == "Lymphoid" | gdsc.cell.info$tissueid == "Myeloid" | gdsc.cell.info$tissueid == "Other")] <- "solid"
 
-gdsc.cell.info = gdsc.cell.info[-which(gdsc.cell.info$tissueid == "Other"),]
 idx.gdsc <- intersect(row.names(gdsc.cell.info),colnames(gdsc.exprs.protein_genes))
 gdsc.cell.info <- gdsc.cell.info[idx.gdsc,]
 gdsc.exprs.protein_genes <- gdsc.exprs.protein_genes[,idx.gdsc]
@@ -157,7 +154,7 @@ gdsc.exprs.protein_genes <- gdsc.exprs.protein_genes[,idx.gdsc]
 gdsc.umap.exprs <- umap::umap(t(gdsc.exprs.protein_genes))
 gdsc.umap.exprs.df <- as.data.frame(gdsc.umap.exprs$layout)
 
-tiff('GDSCv2umapexprs.png', units="in", width=10, height=7, res=600, compression = 'lzw')
+png('GDSCv2umapexprsv2.png', units="in", width=10, height=7, res=600)
 par(cex.axis=0.9)
 Tumor <- gdsc.cell.info[rownames(gdsc.umap.exprs.df), c("tissue.type")]
 ggplot(gdsc.umap.exprs.df, aes(V1, V2, color = Tumor))+ 

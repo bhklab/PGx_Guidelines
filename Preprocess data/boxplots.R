@@ -17,12 +17,11 @@ gcsi.aac <- PharmacoGx::summarizeSensitivityProfiles(
   summary.stat="median",
   verbose=FALSE)
 gcsi.cell.info <- PharmacoGx::cellInfo(gCSI)
-gcsi.cell.info = gcsi.cell.info[-which(gcsi.cell.info$tissueid == "Other"),]
 df <- reshape2::melt(t(gcsi.aac[, row.names(gcsi.cell.info)])) 
 df <- df[!is.na(df$value), ]
 df$tissueid <- gcsi.cell.info[df$Var1, ]$tissueid
-tiff('gcsiboxplotsv3.png', units="in", width=10, height=7, res=600, compression = 'lzw')
-df$Tumor <- ifelse(df$tissueid %in% c("Lymphoid", "Myeloid"), yes = "Non-solid", no = "Solid")
+png('gcsiboxplotsv4.png', units="in", width=10, height=7, res=600)
+df$Tumor <- ifelse(df$tissueid %in% c(c("Lymphoid", "Myeloid", "Other")), yes = "Non-solid", no = "Solid")
 ggplot(df, aes(x = Var2, y = value, fill = Tumor)) + geom_boxplot() + ylab("AAC") + xlab("Drugs") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
   stat_compare_means(aes(group = Tumor), label = "p.signif")
@@ -37,12 +36,11 @@ ctrp.aac <- PharmacoGx::summarizeSensitivityProfiles(
   summary.stat="median",
   verbose=FALSE)
 ctrp.cell.info <- PharmacoGx::cellInfo(CTRPv2)
-ctrp.cell.info = ctrp.cell.info[-which(ctrp.cell.info$tissueid == "Other"),]
 df <- reshape2::melt(t(ctrp.aac[,row.names(ctrp.cell.info)])) 
 df <- df[!is.na(df$value), ]
 df$tissueid <- ctrp.cell.info[df$Var1, ]$tissueid
-df$Tumor <- ifelse(df$tissueid %in% c("Lymphoid", "Myeloid"), yes = "Non-solid", no = "Solid")
-tiff('ctrpboxplotsv3.png', units="in", width=10, height=7, res=600, compression = 'lzw')
+df$Tumor <- ifelse(df$tissueid %in% c(c("Lymphoid", "Myeloid", "Other")), yes = "Non-solid", no = "Solid")
+png('ctrpboxplotsv4.png', units="in", width=10, height=7, res=600)
 ggplot(df, aes(x = Var2, y = value, fill = Tumor)) + geom_boxplot() + ylab("AAC") + xlab("Drugs") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
   stat_compare_means(aes(group = Tumor), label = "p.signif")
@@ -57,12 +55,11 @@ gdsc.aac <- PharmacoGx::summarizeSensitivityProfiles(
   summary.stat="median",
   verbose=FALSE)
 gdsc.cell.info <- PharmacoGx::cellInfo(GDSCv2)
-gdsc.cell.info = gdsc.cell.info[-which(gdsc.cell.info$tissueid == "Other"),]
 df <- reshape2::melt(t(gdsc.aac[, row.names(gdsc.cell.info)])) 
 df <- df[!is.na(df$value), ]
 df$tissueid <- gdsc.cell.info[df$Var1, ]$tissueid
-df$Tumor <- ifelse(df$tissueid %in% c("Lymphoid", "Myeloid"), yes = "Non-solid", no = "Solid")
-tiff('gdscboxplotsv3.png', units="in", width=10, height=7, res=600, compression = 'lzw')
+df$Tumor <- ifelse(df$tissueid %in% c(c("Lymphoid", "Myeloid", "Other")), yes = "Non-solid", no = "Solid")
+png('gdscboxplotsv4.png', units="in", width=10, height=7, res=600)
 ggplot(df, aes(x = Var2, y = value, fill = Tumor)) + geom_boxplot() + ylab("AAC") + xlab("Drugs") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
   stat_compare_means(aes(group = Tumor), label = "p.signif")
@@ -93,12 +90,11 @@ gcsi.ic50 <- PharmacoGx::summarizeSensitivityProfiles(
 gcsi.ic50 = log2(gcsi.ic50)
 
 gcsi.cell.info <- PharmacoGx::cellInfo(gCSI)
-gcsi.cell.info = gcsi.cell.info[-which(gcsi.cell.info$tissueid == "Other"),]
 df <- reshape2::melt(t(gcsi.ic50[, row.names(gcsi.cell.info)])) 
 df <- df[!is.na(df$value), ]
 df$tissueid <- gcsi.cell.info[df$Var1, ]$tissueid
-tiff('gcsiboxplotsv3ic50.png', units="in", width=10, height=7, res=600, compression = 'lzw')
-df$Tumor <- ifelse(df$tissueid %in% c("Lymphoid", "Myeloid"), yes = "Non-solid", no = "Solid")
+png('gcsiboxplotsv3ic50.png', units="in", width=10, height=7, res=600, compression = 'lzw')
+df$Tumor <- ifelse(df$tissueid %in% c(c("Lymphoid", "Myeloid", "Other")), yes = "Non-solid", no = "Solid")
 ggplot(df, aes(x = Var2, y = value, fill = Tumor)) + geom_boxplot() + ylab("ic50") + xlab("Drugs") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
   stat_compare_means(aes(group = Tumor), label = "p.signif")
@@ -128,12 +124,11 @@ ctrp.ic50 <- PharmacoGx::summarizeSensitivityProfiles(
 ctrp.ic50 = log2(ctrp.ic50)
 
 ctrp.cell.info <- PharmacoGx::cellInfo(CTRPv2)
-ctrp.cell.info = ctrp.cell.info[-which(ctrp.cell.info$tissueid == "Other"),]
 df <- reshape2::melt(t(ctrp.ic50[,row.names(ctrp.cell.info)])) 
 df <- df[!is.na(df$value), ]
 df$tissueid <- ctrp.cell.info[df$Var1, ]$tissueid
-df$Tumor <- ifelse(df$tissueid %in% c("Lymphoid", "Myeloid"), yes = "Non-solid", no = "Solid")
-tiff('ctrpboxplotsv3ic50.png', units="in", width=10, height=7, res=600, compression = 'lzw')
+df$Tumor <- ifelse(df$tissueid %in% c(c("Lymphoid", "Myeloid", "Other")), yes = "Non-solid", no = "Solid")
+png('ctrpboxplotsv3ic50.png', units="in", width=10, height=7, res=600, compression = 'lzw')
 ggplot(df, aes(x = Var2, y = value, fill = Tumor)) + geom_boxplot() + ylab("ic50") + xlab("Drugs") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
   stat_compare_means(aes(group = Tumor), label = "p.signif")
@@ -163,12 +158,11 @@ gdsc.ic50 <- PharmacoGx::summarizeSensitivityProfiles(
 gdsc.ic50 = log2(gdsc.ic50)
 
 gdsc.cell.info <- PharmacoGx::cellInfo(GDSCv2)
-gdsc.cell.info = gdsc.cell.info[-which(gdsc.cell.info$tissueid == "Other"),]
 df <- reshape2::melt(t(gdsc.ic50[, row.names(gdsc.cell.info)])) 
 df <- df[!is.na(df$value), ]
 df$tissueid <- gdsc.cell.info[df$Var1, ]$tissueid
-df$Tumor <- ifelse(df$tissueid %in% c("Lymphoid", "Myeloid"), yes = "Non-solid", no = "Solid")
-tiff('gdscboxplotsv3ic50.png', units="in", width=10, height=7, res=600, compression = 'lzw')
+df$Tumor <- ifelse(df$tissueid %in% c("Lymphoid", "Myeloid", "Other"), yes = "Non-solid", no = "Solid")
+png('gdscboxplotsv3ic50.png', units="in", width=10, height=7, res=600, compression = 'lzw')
 ggplot(df, aes(x = Var2, y = value, fill = Tumor)) + geom_boxplot() + ylab("ic50") + xlab("Drugs") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + 
   stat_compare_means(aes(group = Tumor), label = "p.signif")
