@@ -131,5 +131,11 @@ python SNRidge-aac.py
 
 # Citation 
 ```
-To be Updated...
+@article{noghabi2021drug,
+  title={Drug Sensitivity Prediction From Cell Line-Based Pharmacogenomics Data: Guidelines for Developing Machine Learning Models},
+  author={Noghabi, Hossein Sharifi and Jahangiri-Tazehkand, Soheil and Hon, Casey and Smirnov, Petr and Mammoliti, Anthony and Nair, Sisira Kadambat and Mer, Arvind Singh and Ester, Martin and Haibe-Kains, Benjamin},
+  journal={bioRxiv},
+  year={2021},
+  publisher={Cold Spring Harbor Laboratory}
+}
 ```
