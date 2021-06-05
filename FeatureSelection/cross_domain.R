@@ -3,19 +3,25 @@
 #############################################
 rm(list = ls())
 
-no.cores <- 50 # Number of CPU cores to use.
+no.cores <- 6 # Number of CPU cores to use.
 
 source("LoadData.R")
 
 set.seed(42)
 
-#### Feature Selection method can be mRMR or l1000
-# mRMR: 200 high scoring protein coding genes are selected
-# l1000: l1000 landmark genes are selected
+#### Feature Selection method can be "mRMR" or "Landmark"
+# mRMR: 200 high scoring protein coding genes are selected. You can change the number high scoring genes in the code.
+# Landmark: l1000 landmark genes are selected
+fs.method <- "mRMR" 
 
-fs.method <- "mRMR" #mRMR, l1000
+#### Response can be "AAC" or "IC50"
+# AAC: Area above the viability-concentration curve will be used as the summary of drug response
+# IC50: Log2 of the half maximal inhibitory concentration (IC50) will be used as the summary of drug response
+response <- "IC50" 
 
-if (fs.method == "l1000"){
+
+############################################################################
+if (fs.method == "Landmark"){
   subset_genes <- geneId2Name$Name %in% l1000$V1
 }else if (fs.method == "mRMR"){
   subset_genes <- geneId2Name$ID %in% protein.coding.genes$ID
@@ -26,7 +32,22 @@ gdsc_exprs <- gdsc_exprs[, subset_genes]
 gcsi_exprs <- gcsi_exprs[, subset_genes]
 
 #############################################################################
-resp_mat <- ctrp_sens_aac
+
+if (response == "AAC"){
+  ctrp.resp_mat <- ctrp_sens_aac
+  gdsc.resp_mat <- gdsc_sens_aac
+  gcsi.resp_mat <- gcsi_sens_aac
+}else if (response == "IC50"){
+  ctrp.resp_mat <- log2(ctrp_sens_ic50)
+  ctrp.resp_mat[is.infinite(ctrp.resp_mat)] <- NA
+  gdsc.resp_mat <- log2(gdsc_sens_ic50)
+  gdsc.resp_mat[is.infinite(gdsc.resp_mat)] <- NA
+  gcsi.resp_mat <- log2(gcsi_sens_ic50)
+  gcsi.resp_mat[is.infinite(gcsi.resp_mat)] <- NA
+}
+
+#############################################################################
+resp_mat <- ctrp.resp_mat
 exprs_mat <- ctrp_exprs
 #############################################################################
 #### Removing haematopoietic cell lines and those with unmapped tissue types
@@ -48,7 +69,7 @@ for (tissueType in unique(ccle.tissueTypes.subset$tissueid)){
 exprs_mat <- cbind(as.matrix(ccle.tissueTypes.subset[rownames(exprs_mat), -c(1, 2)]), exprs_mat)
 ###################################################################################################
 #####################  SUBSET FEATURES AND ADD TISSUE TYPE AS FEATURE TO GDSC #####################
-# Only keep cell lines with tissue ids in CTRP
+# Keep GDSC cell lines with tissue ids in CTRP
 gdsc.keep <- gdsc.tissueTypes[gdsc.tissueTypes$tissueid %in% unique(ccle.tissueTypes.subset$tissueid), ]$cellid
 gdsc.keep <- intersect(gdsc.keep, rownames(gdsc_exprs))
 gdsc_exprs <- gdsc_exprs[gdsc.keep, ] # features are either PC or l1000
@@ -62,7 +83,7 @@ for (tissueType in unique(ccle.tissueTypes.subset$tissueid)){
 gdsc_exprs <- cbind(as.matrix(gdsc.tissueTypes.subset[rownames(gdsc_exprs), -c(1, 2)]), gdsc_exprs)
 ###################################################################################################
 #####################  SUBSET FEATURES AND ADD TISSUE TYPE AS FEATURE TO gCSI #####################
-# Only keep cell lines with tissue ids in CTRP
+# Keep gCSI cell lines with tissue ids in CTRP
 gcsi.keep <- gcsi.tissueTypes[gcsi.tissueTypes$tissueid %in% unique(ccle.tissueTypes.subset$tissueid), ]$cellid
 gcsi.keep <- intersect(gcsi.keep, rownames(gcsi_exprs))
 gcsi_exprs <- gcsi_exprs[gcsi.keep, ] # features are either PC or l1000
@@ -95,7 +116,7 @@ for (drug.id in 1:ncol(resp_mat)){
   gdsc_exprs.trans <- predict(preproc.model, gdsc_exprs)
   gcsi_exprs.trans <- predict(preproc.model, gcsi_exprs)
   
-  if (fs.method == "l1000"){ # if feature selection is set to l1000, we have already subseted to l1000 genes above
+  if (fs.method == "Landmark"){ # if feature selection is set to Landmark, we have already subseted to l1000 genes above
     features <- colnames(train.Exp.trans)
   }else if (fs.method  == "mRMR"){
     dataMat <- mRMRe::mRMR.data(data=as.data.frame(cbind(sensVec, train.Exp.trans), stringAsFactor=FALSE))
@@ -122,13 +143,22 @@ for (drug.id in 1:ncol(resp_mat)){
 }
 
 ###############################################################################################################
-##### Evaluate the predictions using Pearson and Spearman correlations
+##### Evaluate the predictions using Pearson and Spearman correlations, and RMSE
 ###############################################################################################################
+RMSE  <-  function(P, L){
+  sqrt(mean((P - L)^2))
+}
 
 drugs <- c("Bortezomib", "Entinostat", "Sirolimus", "Docetaxel", "Gemcitabine", "Crizotinib", "Lapatinib", "Vorinostat", "Erlotinib", "Paclitaxel", "Pictilisib")
 
-for (drugName in drugs){
+results <- data.frame(Drug = character(length = 0),
+                      Response = character(length = 0),
+                      Method = character(length = 0),
+                      Evaluation = character(length = 0),
+                      GDSCv2 = numeric(length = 0),
+                      gCSI = numeric(length = 0))
 
+for (drugName in drugs){
   print(drugName)
   cellLines <- complete.cases(resp_mat[, drugName])
   sensVec <- resp_mat[cellLines, drugName]
@@ -138,11 +168,10 @@ for (drugName in drugs){
   gdsc.prediction.cellLines <- rownames(as.matrix(predictions.gdsc[[drugName]]))
   gcsi.prediction.cellLines <- rownames(as.matrix(predictions.gcsi[[drugName]]))
   
-  
   # Getting the ground truth vectors for the drug and the cell lines we have response for
-  gt.resp.gdsc <- gdsc_sens_aac[gdsc.prediction.cellLines, drugName]
+  gt.resp.gdsc <- gdsc.resp_mat[gdsc.prediction.cellLines, drugName]
   gt.resp.gdsc <- gt.resp.gdsc[!is.na(gt.resp.gdsc)]
-  gt.resp.gcsi <- gcsi_sens_aac[gcsi.prediction.cellLines, drugName]
+  gt.resp.gcsi <- gcsi.resp_mat[gcsi.prediction.cellLines, drugName]
   gt.resp.gcsi <- gt.resp.gcsi[!is.na(gt.resp.gcsi)]
   
   gdsc.cellLines <- names(gt.resp.gdsc)
@@ -150,9 +179,13 @@ for (drugName in drugs){
   
   res.all_gdsc.pcc <- cor(gt.resp.gdsc, as.matrix(predictions.gdsc[[drugName]])[gdsc.cellLines, 1], method = "pearson")
   res.all_gdsc.sp <- cor(gt.resp.gdsc, as.matrix(predictions.gdsc[[drugName]])[gdsc.cellLines, 1], method = "spearman")
+  res.all_gdsc.rmse <- RMSE(gt.resp.gdsc, as.matrix(predictions.gdsc[[drugName]])[gdsc.cellLines, 1])
   res.all_gcsi.pcc <- cor(gt.resp.gcsi, as.matrix(predictions.gcsi[[drugName]])[gcsi.cellLines, 1], method = "pearson")
   res.all_gcsi.sp <- cor(gt.resp.gcsi, as.matrix(predictions.gcsi[[drugName]])[gcsi.cellLines, 1], method = "spearman")
-
-  print(sprintf("%s in GDSC: pearson: %f, spearman: %f, ", drugName, res.all_gdsc.pcc, res.all_gdsc.sp))
-  print(sprintf("%s in gCSI: pearson: %f, spearman: %f, ", drugName, res.all_gcsi.pcc, res.all_gcsi.sp))
+  res.all_gcsi.rmse <- RMSE(gt.resp.gcsi, as.matrix(predictions.gcsi[[drugName]])[gcsi.cellLines, 1])
+  
+  results <- rbind(results, data.frame(Drug = drugName, Response = response, Method = fs.method, Evaluation = "Pearson", GDSCv2 = round(res.all_gdsc.pcc, 2), gCSI = round(res.all_gcsi.pcc, 2)))
+  results <- rbind(results, data.frame(Drug = drugName, Response = response, Method = fs.method, Evaluation = "Spearman", GDSCv2 = round(res.all_gdsc.sp, 2), gCSI = round(res.all_gcsi.sp, 2)))
+  results <- rbind(results, data.frame(Drug = drugName, Response = response, Method = fs.method, Evaluation = "RMSE", GDSCv2 = round(res.all_gdsc.rmse, 2), gCSI = round(res.all_gcsi.rmse, 2)))
+  
 }
