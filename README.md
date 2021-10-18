@@ -131,11 +131,16 @@ python SNRidge-aac.py
 
 # Citation 
 ```
-@article{noghabi2021drug,
-  title={Drug Sensitivity Prediction From Cell Line-Based Pharmacogenomics Data: Guidelines for Developing Machine Learning Models},
-  author={Noghabi, Hossein Sharifi and Jahangiri-Tazehkand, Soheil and Hon, Casey and Smirnov, Petr and Mammoliti, Anthony and Nair, Sisira Kadambat and Mer, Arvind Singh and Ester, Martin and Haibe-Kains, Benjamin},
-  journal={bioRxiv},
-  year={2021},
-  publisher={Cold Spring Harbor Laboratory}
+    author = {Sharifi-Noghabi, Hossein and Jahangiri-Tazehkand, Soheil and Smirnov, Petr and Hon, Casey and Mammoliti, Anthony and Nair, Sisira Kadambat and Mer, Arvind Singh and Ester, Martin and Haibe-Kains, Benjamin},
+    title = "{Drug sensitivity prediction from cell line-based pharmacogenomics data: guidelines for developing machine learning models}",
+    journal = {Briefings in Bioinformatics},
+    year = {2021},
+    month = {08},
+    issn = {1477-4054},
+    doi = {10.1093/bib/bbab294},
+    url = {https://doi.org/10.1093/bib/bbab294},
+    note = {bbab294},
+    eprint = {https://academic.oup.com/bib/advance-article-pdf/doi/10.1093/bib/bbab294/39679532/bbab294.pdf},
 }
+
 ```
